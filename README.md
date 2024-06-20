@@ -79,3 +79,12 @@ Frontend:
 
 Database:
 - PostgreSQL
+
+
+## Диаграмма компонентов
+ 
+![Диаграмма компонентов](img/components_diag.drawio.png)
+
+## UML диаграммы классов для компонента доступа к данным и компонента с бизнес-логикой
+ 
+![uml диаграмма классов](img/uml_diag.drawio.png)

@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'https' " />
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'http' " />
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.3.0" />
+    <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="IRepository\" />
+    <None Remove="Services\" />
+    <None Remove="IService\" />
+    <None Remove="Exceptions\" />
+    <None Remove="Exceptions\AuthServiceExeptions\" />
+    <None Remove="Models\" />
+    <None Remove="Models\UserLevelLimits\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="IRepository\" />
+    <Folder Include="Services\" />
+    <Folder Include="IService\" />
+    <Folder Include="Exceptions\" />
+    <Folder Include="Exceptions\AuthServiceExeptions\" />
+    <Folder Include="Models\" />
+    <Folder Include="Models\UserLevelLimits\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="IRepository\IRepository.cs" />
+  </ItemGroup>
+</Project>

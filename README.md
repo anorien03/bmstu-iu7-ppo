@@ -27,7 +27,7 @@
 
 ## Use-Case - диаграмма
 
-![Use-Case - диаграмма](img/use_case.drawio.png)
+![Use-Case - диаграмма](docs/img/use_case.drawio.png)
 
 #### 1 сложный use-case:
 Авторизация
@@ -37,7 +37,7 @@
 
 ## ER-диаграмма сущностей
 
-![ER-диаграмма сущностей](img/er_diagram.drawio.png)
+![ER-диаграмма сущностей](docs/img/er_diagram.drawio.png)
 
 ## Пользовательские сценарии
 Гость:
@@ -65,7 +65,7 @@
 
 ## Формализация ключевых бизнес-процессов
 
-![BPMN диаграмма](img/bpmn_diagram.svg)
+![BPMN диаграмма](docs/img/bpmn_diagram.svg)
 
 ## Технологический стек
 Тип приложения: Web SPA
@@ -83,8 +83,8 @@ Database:
 
 ## Диаграмма компонентов
  
-![Диаграмма компонентов](img/components_diag.drawio.png)
+![Диаграмма компонентов](docs/img/components_diag.drawio.png)
 
 ## UML диаграммы классов для компонента доступа к данным и компонента с бизнес-логикой
  
-![uml диаграмма классов](img/uml_diag.drawio.png)
+![uml диаграмма классов](docs/img/uml_diag.drawio.png)

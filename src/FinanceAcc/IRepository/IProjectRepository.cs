@@ -5,5 +5,6 @@ namespace FinanceAcc.IRepository
 {
 	public interface IProjectRepository: IBaseRepository<Project>
     {
-	}
+        Task<Project> GetByIdAsync(int id);
+    }
 }

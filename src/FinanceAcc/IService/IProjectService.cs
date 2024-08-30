@@ -5,13 +5,21 @@ namespace FinanceAcc.IService
 {
 	public interface IProjectService
 	{
-        Task<List<Project>> GetProjectsByUserIdAsync(Guid userId);
+        Task<List<ProjectDetailed>> GetProjectsByUserIdAsync(int userId);
 
-        Task<List<User>> GetUsersByProjectIdAsync(Guid projectId);
+        Task<List<User>> GetUsersByProjectIdAsync(int projectId);
 
-        Task CreateProjectAsync(Project project);
+        Task CreateProjectAsync(User user, Project project);
 
-        Task DeleteProjectAsync(Guid projectId);
+        Task DeleteProjectAsync(int projectId);
+
+        Task InviteUserToProjectAsync(int userId, int projectId);
+
+        Task AcceptInvitingToProjectAsync(User user, int projectId);
+
+        Task RefuseInvitingToProjectAsync(int userId, int projectId);
+
+        Task RemoveUserFromProjectAsync(int userId, int projectId);
     }
 }
 

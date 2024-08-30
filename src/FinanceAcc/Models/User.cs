@@ -6,7 +6,7 @@ namespace FinanceAcc.Models
 {
 	public class User
 	{
-        public int? Id { get; set; }
+        public int Id { get; set; }
 
         public string Login { get; set; }
 
@@ -25,7 +25,6 @@ namespace FinanceAcc.Models
 
         public User(string login, UserLevel level)
         {
-            Id = null;
             Login = login;
             PasswordHash = null;
             Level = level;

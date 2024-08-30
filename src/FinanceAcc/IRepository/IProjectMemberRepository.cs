@@ -1,11 +1,27 @@
 ﻿using System;
+using System.Linq.Expressions;
 using FinanceAcc.Models;
 
 namespace FinanceAcc.IRepository
 {
-	public interface IProjectMemberRepository: IBaseRepository<ProjectMember>
+	public interface IProjectMemberRepository
     {
-		Task<List<ProjectMember>> GetProjectMembersByProjectIdAsync(int projectId);
-	}
+        Task AddAsync(ProjectMember memberc);
+
+        Task UpdateAsync(ProjectMember member);
+
+        Task RemoveAsync(int userId, int projectId);
+
+
+        Task<List<ProjectMember>> GetRangeByUserIdAsync(int userId);
+
+        Task<List<ProjectMember>> GetRangeByProjectIdAsync(int projectId);
+
+        Task RemoveRangeByProjectIdAsync(int projectId);
+
+        Task<int> CountRowsAsync(int userId, MemberStatus status);
+
+        Task<ProjectMember> GetByIdAsync(int userId, int projectId);
+    }
 }
 

@@ -20,7 +20,7 @@
     <None Remove="Exceptions\" />
     <None Remove="Exceptions\AuthServiceExeptions\" />
     <None Remove="Models\" />
-    <None Remove="Models\UserLevelLimits\" />
+    <None Remove="Exceptions\ProjectServiceExceptions\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="IRepository\" />
@@ -29,9 +29,10 @@
     <Folder Include="Exceptions\" />
     <Folder Include="Exceptions\AuthServiceExeptions\" />
     <Folder Include="Models\" />
-    <Folder Include="Models\UserLevelLimits\" />
+    <Folder Include="Exceptions\ProjectServiceExceptions\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="IRepository\IRepository.cs" />
+    <Compile Remove="DTO\ProjectDto.cs" />
   </ItemGroup>
 </Project>

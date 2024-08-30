@@ -7,6 +7,8 @@ namespace FinanceAcc.IRepository
 	public interface IUserRepository: IBaseRepository<User>
     {
         Task<User> GetUserByLoginAsync(string login);
-	}
+
+        Task<User> GetByIdAsync(int id);
+    }
 }
 

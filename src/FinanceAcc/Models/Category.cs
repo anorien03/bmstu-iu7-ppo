@@ -7,14 +7,24 @@ namespace FinanceAcc.Models
 	{
 		public int? Id { get; set; }
 
+		public int ProjectId { get; set; }
+
         public string Name { get; set; }
 
 
-        public Category(int id, string name)
+        public Category(int id, int projectId, string name)
 		{
 			Id = id;
+            ProjectId = projectId;
 			Name = name;
 		}
-	}
+
+
+        public Category(int projectId, string name)
+        {
+            ProjectId = projectId;
+            Name = name;
+        }
+    }
 }
 

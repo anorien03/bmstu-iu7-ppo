@@ -6,7 +6,7 @@ namespace FinanceAcc.IRepository
 {
 	public interface IProjectMemberRepository
     {
-        Task AddAsync(ProjectMember memberc);
+        Task AddAsync(ProjectMember member);
 
         Task UpdateAsync(ProjectMember member);
 
@@ -16,8 +16,6 @@ namespace FinanceAcc.IRepository
         Task<List<ProjectMember>> GetRangeByUserIdAsync(int userId);
 
         Task<List<ProjectMember>> GetRangeByProjectIdAsync(int projectId);
-
-        Task RemoveRangeByProjectIdAsync(int projectId);
 
         Task<int> CountRowsAsync(int userId, MemberStatus status);
 

@@ -11,7 +11,7 @@ namespace FinanceAcc.IService
 
         Task CreateProjectAsync(User user, Project project);
 
-        Task DeleteProjectAsync(int projectId);
+        Task DeleteProjectAsync(int userId, int projectId);
 
         Task InviteUserToProjectAsync(int userId, int projectId);
 

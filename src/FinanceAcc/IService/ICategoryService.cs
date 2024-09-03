@@ -5,7 +5,10 @@ namespace FinanceAcc.IService
 {
 	public interface ICategoryService
 	{
-		Task<List<Category>> GetCategoriesByProjectIdAsync(Guid projectId);
-	}
+		Task<List<Category>> GetCategoriesByProjectIdAsync(int projectId);
+
+		Task AddCategoriesToProjectAsync(int projectId);
+
+    }
 }
 

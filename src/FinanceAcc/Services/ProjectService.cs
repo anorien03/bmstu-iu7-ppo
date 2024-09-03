@@ -14,10 +14,10 @@ namespace FinanceAcc.Services
         private readonly IProjectMemberRepository _projectMemberRepository;
         private readonly IUserRepository _userRepository;
 
-        public ProjectService(IProjectRepository projectRepository, IProjectMemberRepository projectmemberRepository, IUserRepository userRepository)
+        public ProjectService(IProjectRepository projectRepository, IProjectMemberRepository projectMemberRepository, IUserRepository userRepository)
 		{
 			_projectRepository = projectRepository ?? throw new ArgumentNullException();
-            _projectMemberRepository = projectmemberRepository ?? throw new ArgumentNullException();
+            _projectMemberRepository = projectMemberRepository ?? throw new ArgumentNullException();
             _userRepository = userRepository ?? throw new ArgumentNullException();
         }
 
@@ -44,7 +44,7 @@ namespace FinanceAcc.Services
         {
             if (! await CheckUserLimit(user, MemberStatus.Admin))
             {
-                throw new UserLevelLimitReachedException();
+                throw new UserLevelLimitReachedException("User reached the limit of owning projects.");
             }
 
             var newMember = new ProjectMember(user.Id, project.Id, MemberStatus.Admin);
@@ -53,12 +53,14 @@ namespace FinanceAcc.Services
         }
 
 
-        public async Task DeleteProjectAsync(int projectId)
+        public async Task DeleteProjectAsync(int userId, int projectId)
         {
-            if (await _projectRepository.GetByIdAsync(projectId) == null)
-                throw new ProjectNotFoundException();
+            var member = await _projectMemberRepository.GetByIdAsync(userId, projectId);
+            if (member == null)
+                throw new UserNotInvitedToProjectException("User isn't member of project");
 
-            await _projectMemberRepository.RemoveRangeByProjectIdAsync(projectId);
+            if (member.Status != MemberStatus.Admin)
+                throw new AccessDeniedException("User isn't allowed to delete the project.");
 
             await _projectRepository.RemoveAsync(projectId);
         }
@@ -68,7 +70,7 @@ namespace FinanceAcc.Services
         {
             if (await _userRepository.GetByIdAsync(userId) == null)
             {
-                throw new UserNotFoundException();
+                throw new UserNotFoundException($"User with id {userId} not found");
             }
 
             var projectMembers = await _projectMemberRepository.GetRangeByUserIdAsync(userId);
@@ -89,7 +91,7 @@ namespace FinanceAcc.Services
         {
             if(await _projectRepository.GetByIdAsync(projectId) == null)
             {
-                throw new ProjectNotFoundException();
+                throw new ProjectNotFoundException($"Project with id {projectId} not found");
             }
 
             var projectMembers = await _projectMemberRepository.GetRangeByProjectIdAsync(projectId);
@@ -110,9 +112,18 @@ namespace FinanceAcc.Services
 
         public async Task InviteUserToProjectAsync(int userId, int projectId)
         {
-            if (await _projectMemberRepository.GetByIdAsync(userId, projectId) == null)
+            if (await _userRepository.GetByIdAsync(userId) == null)
             {
-                throw new UserAlreadyInvitedException();
+                throw new UserNotFoundException($"User with id {userId} not found");
+            }
+            if (await _projectRepository.GetByIdAsync(projectId) == null)
+            {
+                throw new ProjectNotFoundException($"Project with id {projectId} not found");
+            }
+
+            if (await _projectMemberRepository.GetByIdAsync(userId, projectId) != null)
+            {
+                throw new UserAlreadyInvitedException($"User has already been invited.");
             }
 
             var newMember = new ProjectMember(userId, projectId, MemberStatus.Invited);
@@ -125,17 +136,17 @@ namespace FinanceAcc.Services
             var member = await _projectMemberRepository.GetByIdAsync(user.Id, projectId);
             if (member == null)
             {
-                throw new UserNotInvitedToProjectException();
+                throw new UserNotInvitedToProjectException("User hasn't been invited to project");
             }
 
             if (member.Status != MemberStatus.Invited)
             {
-                throw new UserHasAlreadyJoinedException();
+                throw new UserHasAlreadyJoinedException("User has already joined the project");
             }
 
             if (!await CheckUserLimit(user, MemberStatus.Member))
             {
-                throw new UserLevelLimitReachedException();
+                throw new UserLevelLimitReachedException("User reached the limit of sharing projects");
             }
 
             member.Status = MemberStatus.Member;
@@ -148,28 +159,29 @@ namespace FinanceAcc.Services
             var member = await _projectMemberRepository.GetByIdAsync(userId, projectId);
             if (member == null)
             {
-                throw new UserNotInvitedToProjectException();
+                throw new UserNotInvitedToProjectException("User hasn't been invited to project.");
             }
 
             if (member.Status != MemberStatus.Invited)
             {
-                throw new UserHasAlreadyJoinedException();
+                throw new UserHasAlreadyJoinedException("User has already accepted the nvitation.");
             }
 
             await _projectMemberRepository.RemoveAsync(userId, projectId);
         }
+
 
         public async Task RemoveUserFromProjectAsync(int userId, int projectId)
         {
             var member = await _projectMemberRepository.GetByIdAsync(userId, projectId);
             if (member == null)
             {
-                throw new UserNotInvitedToProjectException();
+                throw new UserNotInvitedToProjectException("User isn't member of the project.");
             }
 
             if (member.Status == MemberStatus.Admin)
             {
-                throw new UnableRemoveAdminException();
+                throw new UnableRemoveAdminException("Unable to remove admin from the project");
             }
 
             await _projectMemberRepository.RemoveAsync(userId, projectId);

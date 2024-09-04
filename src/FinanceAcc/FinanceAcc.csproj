@@ -1,0 +1,46 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'https' " />
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'http' " />
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.3.0" />
+    <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="IRepository\" />
+    <None Remove="Services\" />
+    <None Remove="IService\" />
+    <None Remove="Exceptions\" />
+    <None Remove="Exceptions\AuthServiceExeptions\" />
+    <None Remove="Exceptions\ProjectServiceExceptions\" />
+    <None Remove="Exceptions\CategoryServiceException\" />
+    <None Remove="Exceptions\RecordServiceException\" />
+    <None Remove="Models\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="IRepository\" />
+    <Folder Include="Services\" />
+    <Folder Include="IService\" />
+    <Folder Include="Exceptions\" />
+    <Folder Include="Exceptions\AuthServiceExeptions\" />
+    <Folder Include="Exceptions\ProjectServiceExceptions\" />
+    <Folder Include="Exceptions\CategoryServiceException\" />
+    <Folder Include="Exceptions\RecordServiceException\" />
+    <Folder Include="Models\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="IRepository\IRepository.cs" />
+    <Compile Remove="DTO\ProjectDto.cs" />
+    <Compile Remove="Services\IRecordRepository.cs" />
+    <Compile Remove="Dto\ProjectDto.cs" />
+    <Compile Remove="Exceptions\RecordServiceException\InvalidTimeIntervalException.cs" />
+    <Compile Remove="Exceptions\RecordServiceException\TimeIntervalExceeded.cs" />
+  </ItemGroup>
+</Project>

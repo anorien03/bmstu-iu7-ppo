@@ -19,8 +19,10 @@
     <None Remove="IService\" />
     <None Remove="Exceptions\" />
     <None Remove="Exceptions\AuthServiceExeptions\" />
-    <None Remove="Models\" />
     <None Remove="Exceptions\ProjectServiceExceptions\" />
+    <None Remove="Exceptions\CategoryServiceException\" />
+    <None Remove="Exceptions\RecordServiceException\" />
+    <None Remove="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="IRepository\" />
@@ -28,11 +30,17 @@
     <Folder Include="IService\" />
     <Folder Include="Exceptions\" />
     <Folder Include="Exceptions\AuthServiceExeptions\" />
-    <Folder Include="Models\" />
     <Folder Include="Exceptions\ProjectServiceExceptions\" />
+    <Folder Include="Exceptions\CategoryServiceException\" />
+    <Folder Include="Exceptions\RecordServiceException\" />
+    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="IRepository\IRepository.cs" />
     <Compile Remove="DTO\ProjectDto.cs" />
+    <Compile Remove="Services\IRecordRepository.cs" />
+    <Compile Remove="Dto\ProjectDto.cs" />
+    <Compile Remove="Exceptions\RecordServiceException\InvalidTimeIntervalException.cs" />
+    <Compile Remove="Exceptions\RecordServiceException\TimeIntervalExceeded.cs" />
   </ItemGroup>
 </Project>

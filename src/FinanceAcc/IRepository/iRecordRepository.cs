@@ -4,9 +4,11 @@ using FinanceAcc.Models;
 
 namespace FinanceAcc.IRepository
 {
-	public interface IRecord: IBaseRepository<Record>
+	public interface IRecordRepository: IBaseRepository<Record>
 	{
-		Task<List<Record>> GetFilteredRecordsAsync(Expression<Func<int, int>> operfilter);
+        Task<Record> GetByIdAsync(int recordId);
+
+        Task<List<Record>> GetFilteredAsync(Expression<Func<Record, bool>> filter);
 	}
 }
 

@@ -1,15 +1,16 @@
 ﻿using System;
+using System.Linq.Expressions;
 using FinanceAcc.Models;
 
 namespace FinanceAcc.IService
 {
 	public interface IRecordService
 	{
-		Task<List<Record>> GetRecordsByProjectIdAsync(Guid projectId);
+        Task<List<Record>> GetRecordsAsync(int projectId, int? categoryId);
 
-        Task<List<Record>> GetRecordsByFilterAsync(Guid projectId, Guid userId, Guid categoryId, DateTime start, DateTime end);
+        Task AddRecordAsync(Record record);
 
-        Task CreateRecordAsync(Record record);
+        Task RemoveRecordAsync(int recordId);
     }
 }
 

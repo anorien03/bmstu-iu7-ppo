@@ -7,7 +7,9 @@ namespace FinanceAcc.IRepository
 	{
 		Task<List<Category>> GetRangeByProjectIdAsync(int projectId);
 
-		Task AddRangeAsync(List<Category> categories);
+        Task<Category> GetByIdAsync(int categoryId);
+
+        Task AddRangeAsync(List<Category> categories);
 	}
 }
 

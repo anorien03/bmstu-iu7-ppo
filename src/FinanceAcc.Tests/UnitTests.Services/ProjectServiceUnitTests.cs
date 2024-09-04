@@ -485,21 +485,13 @@ namespace FinanceAcc.Tests.UnitTests.Services
 
         public List<User> CreateListOfUsers()
         {
-            var users = new List<User>()
+            return new List<User>()
             {
                 new User(1, "ladybird", "redautumn", UserLevel.Free),
                 new User(2, "cherry", "blood", UserLevel.Gold),
                 new User(3, "nastyrat", "gypsy", UserLevel.Silver),
                 new User(4, "anorien", "12345", UserLevel.Gold)
             };
-
-            foreach (var user in users)
-            {
-                user.SetPassword(user.PasswordHash != null ? user.PasswordHash : "aaaaaaaaa");
-                Console.Write(user.PasswordHash);
-            }
-
-            return users;
         }
 
 
@@ -531,7 +523,7 @@ namespace FinanceAcc.Tests.UnitTests.Services
                 new ProjectMember(1, 3, MemberStatus.Member),
                 new ProjectMember(1, 10, MemberStatus.Member),
                 new ProjectMember(1, 11, MemberStatus.Invited)
-        };
+            };
 
         }
     }

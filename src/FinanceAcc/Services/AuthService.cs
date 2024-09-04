@@ -18,7 +18,7 @@ namespace FinanceAcc.Services
 
         public async Task<User> Login(string login, string password)
         {
-            var user = await _userRepository.GetUserByLoginAsync(login);
+            var user = await _userRepository.GetByLoginAsync(login);
 
             if (user == null)
             {
@@ -36,7 +36,7 @@ namespace FinanceAcc.Services
 
         public async Task Register(User user, string password)
         {
-            if (await _userRepository.GetUserByLoginAsync(user.Login) != null)
+            if (await _userRepository.GetByLoginAsync(user.Login) != null)
             {
                 throw new UserLoginAlreadyExistsException($"User with login {user.Login} already exists");
             }

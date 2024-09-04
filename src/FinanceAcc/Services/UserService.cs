@@ -18,7 +18,7 @@ namespace FinanceAcc.Services
 
         public async Task<User> GetUserByLoginAsync(string login)
         {
-            var user = await _userRepository.GetUserByLoginAsync(login);
+            var user = await _userRepository.GetByLoginAsync(login);
 
             return user ?? throw new UserLoginNotFoundException();
         }

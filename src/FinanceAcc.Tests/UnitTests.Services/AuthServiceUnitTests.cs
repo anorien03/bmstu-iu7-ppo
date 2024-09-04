@@ -27,7 +27,7 @@ namespace FinanceAcc.Tests.UnitTests.Services
 			var password = "12345";
 			List<User> users = CreateListOfUsers();
 			var expectedUser = users.Last();
-			_mockUserRepository.Setup(repo => repo.GetUserByLoginAsync(login)).ReturnsAsync(users.Find(user => user.Login == login)!);
+			_mockUserRepository.Setup(repo => repo.GetByLoginAsync(login)).ReturnsAsync(users.Find(user => user.Login == login)!);
 
 			var user = await _authService.Login(login, password);
 
@@ -41,7 +41,7 @@ namespace FinanceAcc.Tests.UnitTests.Services
 			var login = "anorien";
 			var password = "kukareku";
 			List<User> users = CreateListOfUsers();
-			_mockUserRepository.Setup(repo => repo.GetUserByLoginAsync(login)).ReturnsAsync(users.Find(user => user.Login == login)!);
+			_mockUserRepository.Setup(repo => repo.GetByLoginAsync(login)).ReturnsAsync(users.Find(user => user.Login == login)!);
 
 			async Task<User> Result() => await _authService.Login(login, password);
 
@@ -55,7 +55,7 @@ namespace FinanceAcc.Tests.UnitTests.Services
 			var login = "qwerty";
 			var password = "kukareku";
 			List<User> users = CreateListOfUsers();
-			_mockUserRepository.Setup(repo => repo.GetUserByLoginAsync(login)).ReturnsAsync(users.Find(user => user.Login == login)!);
+			_mockUserRepository.Setup(repo => repo.GetByLoginAsync(login)).ReturnsAsync(users.Find(user => user.Login == login)!);
 
 			async Task<User> Result() => await _authService.Login(login, password);
 
@@ -70,7 +70,7 @@ namespace FinanceAcc.Tests.UnitTests.Services
 			var user = new User("anorien", UserLevel.Free);
 			var password = "kukareku";
 			List<User> users = CreateListOfUsers();
-			_mockUserRepository.Setup(repo => repo.GetUserByLoginAsync(user.Login)).ReturnsAsync(users.Find(u => u.Login == user.Login)!);
+			_mockUserRepository.Setup(repo => repo.GetByLoginAsync(user.Login)).ReturnsAsync(users.Find(u => u.Login == user.Login)!);
 
 			async Task Result() => await _authService.Register(user, password);
 
@@ -85,7 +85,7 @@ namespace FinanceAcc.Tests.UnitTests.Services
 			var password = "kukareku";
 			List<User> users = CreateListOfUsers();
 
-			_mockUserRepository.Setup(repo => repo.GetUserByLoginAsync(user.Login)).ReturnsAsync(users.Find(u => u.Login == user.Login)!);
+			_mockUserRepository.Setup(repo => repo.GetByLoginAsync(user.Login)).ReturnsAsync(users.Find(u => u.Login == user.Login)!);
 			_mockUserRepository.Setup(repo => repo.AddAsync(user)).Callback((User u) => users.Add(user));
 
 			await _authService.Register(user, password);

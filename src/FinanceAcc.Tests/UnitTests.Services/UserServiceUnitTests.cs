@@ -26,7 +26,7 @@ namespace FinanceAcc.Tests.UnitTests.Services
             var users = CreateListOfUsers();
             var login = "blueberry";
 
-            _mockUserRepository.Setup(repo => repo.GetUserByLoginAsync(login)).ReturnsAsync(users.Find(u => u.Login == login)!);
+            _mockUserRepository.Setup(repo => repo.GetByLoginAsync(login)).ReturnsAsync(users.Find(u => u.Login == login)!);
 
             async Task<User> Result() => await _userService.GetUserByLoginAsync(login);
 
@@ -41,7 +41,7 @@ namespace FinanceAcc.Tests.UnitTests.Services
             var login = "cherry";
             var expectedUser = users[1];
 
-            _mockUserRepository.Setup(repo => repo.GetUserByLoginAsync(login)).ReturnsAsync(users.Find(u => u.Login == login)!);
+            _mockUserRepository.Setup(repo => repo.GetByLoginAsync(login)).ReturnsAsync(users.Find(u => u.Login == login)!);
 
             var returnedUser = await _userService.GetUserByLoginAsync(login);
 

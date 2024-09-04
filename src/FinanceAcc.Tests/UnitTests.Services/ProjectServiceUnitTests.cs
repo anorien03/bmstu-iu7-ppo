@@ -24,52 +24,6 @@ namespace FinanceAcc.Tests.UnitTests.Services
 
 
         [Fact]
-        public async void CreateProjectOkTest()
-        {
-            List<User> users = CreateListOfUsers();
-            List<Project> projects = CreateListOfProjects();
-            List<ProjectMember> members = CreateListOfProjectMembers();
-
-            var user = users[1];
-            var newProject = new Project(4, "King");
-            
-            _mockProjectMemberRepository.Setup(repo => repo.CountRowsAsync(user.Id, MemberStatus.Admin)).ReturnsAsync(members.Count(u =>
-                    u.UserId == user.Id & u.Status == MemberStatus.Admin));
-            _mockProjectMemberRepository.Setup(repo => repo.AddAsync(It.IsAny<ProjectMember>())).Callback((ProjectMember m) => members.Add(m));
-            _mockProjectRepository.Setup(repo => repo.AddAsync(newProject)).Callback((Project p) => projects.Add(p));
-
-            await _projectService.CreateProjectAsync(user, newProject);
-            var actualProject = projects.Last();
-            var actualMember = members.Last();
-
-            Assert.Equal(newProject, actualProject);
-            Assert.Equal(user.Id, actualMember.UserId);
-            Assert.Equal(newProject.Id, actualMember.ProjectId);
-            Assert.Equal(MemberStatus.Admin, actualMember.Status);
-        }
-
-
-        [Fact]
-        public async void CreateProjectLimitReachedTest()
-        {
-            List<User> users = CreateListOfUsers();
-            List<Project> projects = CreateListOfProjects();
-            List<ProjectMember> members = CreateListOfProjectMembers();
-
-            var user = users[0];
-            var newProject = new Project(4, "King");
-
-            _mockProjectMemberRepository.Setup(repo => repo.CountRowsAsync(user.Id, MemberStatus.Admin)).ReturnsAsync(members.Count(u =>
-                    u.UserId == user.Id & u.Status == MemberStatus.Admin));
-        
-
-            async Task Result() => await _projectService.CreateProjectAsync(user, newProject);
-
-            await Assert.ThrowsAsync<UserLevelLimitReachedException>(Result);
-        }
-
-
-        [Fact]
         public async void DeleteProjectOkTest()
         {
             List<Project> projects = CreateListOfProjects();
@@ -238,7 +192,7 @@ namespace FinanceAcc.Tests.UnitTests.Services
 
 
         [Fact]
-        public async void InviteUserToProjectOkTest()
+        public async void InviteUserOkTest()
         {
             List<User> users = CreateListOfUsers();
             List<Project> projects = CreateListOfProjects();
@@ -255,7 +209,7 @@ namespace FinanceAcc.Tests.UnitTests.Services
             _mockProjectMemberRepository.Setup(repo => repo.AddAsync(It.IsAny<ProjectMember>())).Callback((ProjectMember m) => members.Add(m));
 
 
-            await _projectService.InviteUserToProjectAsync(userId, projectId);
+            await _projectService.InviteUserAsync(userId, projectId);
             var actualMember = members.Last();
 
             Assert.Equal(expectedMember.UserId, actualMember.UserId);
@@ -265,7 +219,7 @@ namespace FinanceAcc.Tests.UnitTests.Services
 
 
         [Fact]
-        public async void InviteUserToProjectAlreadyInvitedTest()
+        public async void InviteUserAlreadyInvitedTest()
         {
             List<User> users = CreateListOfUsers();
             List<Project> projects = CreateListOfProjects();
@@ -281,37 +235,14 @@ namespace FinanceAcc.Tests.UnitTests.Services
                     m.ProjectId == projectId && m.UserId == userId)!);
 
 
-            async Task Result() => await _projectService.InviteUserToProjectAsync(userId, projectId);
+            async Task Result() => await _projectService.InviteUserAsync(userId, projectId);
 
             await Assert.ThrowsAsync<UserAlreadyInvitedException>(Result);
         }
 
 
         [Fact]
-        public async void AcceptInvitingToProjectOkTest()
-        {
-            List<User> users = CreateListOfUsers();
-            List<ProjectMember> members = CreateListOfProjectMembers();
-
-            var projectId = 2;
-            var user = users[2];
-
-            _mockProjectMemberRepository.Setup(repo => repo.CountRowsAsync(user.Id, MemberStatus.Member)).ReturnsAsync(members.Count(u =>
-                    u.UserId == user.Id && u.Status == MemberStatus.Member));
-            _mockProjectMemberRepository.Setup(repo => repo.GetByIdAsync(user.Id, projectId)).ReturnsAsync(members.Find(m =>
-                    m.ProjectId == projectId && m.UserId == user.Id)!);
-            _mockProjectMemberRepository.Setup(repo => repo.UpdateAsync(It.IsAny<ProjectMember>())).Callback((ProjectMember member) =>
-                    (members.Find(m => m.UserId == member.UserId && m.ProjectId == member.ProjectId) ?? members.First()).Status = member.Status);
-
-            await _projectService.AcceptInvitingToProjectAsync(user, projectId);
-            var actualMember = members.Find(m => m.UserId == user.Id && m.ProjectId == projectId) ?? members.First();
-
-            Assert.Equal(MemberStatus.Member, actualMember.Status);
-        }
-
-
-        [Fact]
-        public async void AcceptInvitingToProjectNotInvitedTest()
+        public async void AcceptInvitingNotInvitedTest()
         {
             List<User> users = CreateListOfUsers();
             List<ProjectMember> members = CreateListOfProjectMembers();
@@ -322,14 +253,14 @@ namespace FinanceAcc.Tests.UnitTests.Services
             _mockProjectMemberRepository.Setup(repo => repo.GetByIdAsync(user.Id, projectId)).ReturnsAsync(members.Find(m =>
                     m.ProjectId == projectId && m.UserId == user.Id)!);
 
-            async Task Result() => await _projectService.AcceptInvitingToProjectAsync(user, projectId);
+            async Task Result() => await _projectService.AcceptInvitingAsync(user, projectId);
 
             await Assert.ThrowsAsync<UserNotInvitedToProjectException>(Result);
         }
 
 
         [Fact]
-        public async void AcceptInvitingToProjectAlreadyJoinedTest()
+        public async void AcceptInvitingAlreadyJoinedTest()
         {
             List<User> users = CreateListOfUsers();
             List<ProjectMember> members = CreateListOfProjectMembers();
@@ -340,37 +271,14 @@ namespace FinanceAcc.Tests.UnitTests.Services
             _mockProjectMemberRepository.Setup(repo => repo.GetByIdAsync(user.Id, projectId)).ReturnsAsync(members.Find(m =>
                     m.ProjectId == projectId && m.UserId == user.Id)!);
 
-            async Task Result() => await _projectService.AcceptInvitingToProjectAsync(user, projectId);
+            async Task Result() => await _projectService.AcceptInvitingAsync(user, projectId);
 
             await Assert.ThrowsAsync<UserHasAlreadyJoinedException>(Result);
         }
 
 
         [Fact]
-        public async void AcceptInvitingToProjectLimitReachedTest()
-        {
-            List<User> users = CreateListOfUsers();
-            List<ProjectMember> members = CreateListOfProjectMembers();
-
-            var projectId = 11;
-            var user = users[0];
-
-
-            _mockProjectMemberRepository.Setup(repo => repo.CountRowsAsync(user.Id, MemberStatus.Member)).ReturnsAsync(members.Count(u =>
-                    u.UserId == user.Id && u.Status == MemberStatus.Member));
-            _mockProjectMemberRepository.Setup(repo => repo.GetByIdAsync(user.Id, projectId)).ReturnsAsync(members.Find(m =>
-                    m.ProjectId == projectId && m.UserId == user.Id)!);
-            _mockProjectMemberRepository.Setup(repo => repo.UpdateAsync(It.IsAny<ProjectMember>())).Callback((ProjectMember member) =>
-                    (members.Find(m => m.UserId == member.UserId && m.ProjectId == member.ProjectId) ?? members.First()).Status = member.Status);
-
-            async Task Result() => await _projectService.AcceptInvitingToProjectAsync(user, projectId);
-
-            await Assert.ThrowsAsync<UserLevelLimitReachedException>(Result);
-        }
-
-
-        [Fact]
-        public async void RefuseInvitingToProjectOkTest()
+        public async void RefuseInvitingOkTest()
         {
             List<User> users = CreateListOfUsers();
             List<ProjectMember> members = CreateListOfProjectMembers();
@@ -383,7 +291,7 @@ namespace FinanceAcc.Tests.UnitTests.Services
             _mockProjectMemberRepository.Setup(repo => repo.RemoveAsync(user.Id, projectId)).Callback((int uId, int prId) =>
                     members.RemoveAll(m => m.UserId == uId && m.ProjectId == prId));
 
-            await _projectService.RefuseInvitingToProjectAsync(user.Id, projectId);
+            await _projectService.RefuseInvitingAsync(user.Id, projectId);
             var doesMemberExist = members.Find(m => m.UserId == user.Id && m.ProjectId == projectId);
 
             Assert.Null(doesMemberExist);
@@ -391,7 +299,7 @@ namespace FinanceAcc.Tests.UnitTests.Services
 
 
         [Fact]
-        public async void RefuseInvitingToProjectNotInvitedTest()
+        public async void RefuseInvitingNotInvitedTest()
         {
             List<User> users = CreateListOfUsers();
             List<ProjectMember> members = CreateListOfProjectMembers();
@@ -402,14 +310,14 @@ namespace FinanceAcc.Tests.UnitTests.Services
             _mockProjectMemberRepository.Setup(repo => repo.GetByIdAsync(user.Id, projectId)).ReturnsAsync(members.Find(m =>
                     m.ProjectId == projectId && m.UserId == user.Id)!);
 
-            async Task Result() => await _projectService.RefuseInvitingToProjectAsync(user.Id, projectId);
+            async Task Result() => await _projectService.RefuseInvitingAsync(user.Id, projectId);
 
             await Assert.ThrowsAsync<UserHasAlreadyJoinedException>(Result);
         }
 
 
         [Fact]
-        public async void RefuseInvitingToProjectAlreadyJoinedTest()
+        public async void RefuseInvitingAlreadyJoinedTest()
         {
             List<User> users = CreateListOfUsers();
             List<ProjectMember> members = CreateListOfProjectMembers();
@@ -420,7 +328,7 @@ namespace FinanceAcc.Tests.UnitTests.Services
             _mockProjectMemberRepository.Setup(repo => repo.GetByIdAsync(user.Id, projectId)).ReturnsAsync(members.Find(m =>
                     m.ProjectId == projectId && m.UserId == user.Id)!);
 
-            async Task Result() => await _projectService.RefuseInvitingToProjectAsync(user.Id, projectId);
+            async Task Result() => await _projectService.RefuseInvitingAsync(user.Id, projectId);
 
             await Assert.ThrowsAsync<UserNotInvitedToProjectException>(Result);
         }

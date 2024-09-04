@@ -13,11 +13,11 @@ namespace FinanceAcc.IService
 
         Task DeleteProjectAsync(int userId, int projectId);
 
-        Task InviteUserToProjectAsync(int userId, int projectId);
+        Task InviteUserAsync(int userId, int projectId);
 
-        Task AcceptInvitingToProjectAsync(User user, int projectId);
+        Task AcceptInvitingAsync(User user, int projectId);
 
-        Task RefuseInvitingToProjectAsync(int userId, int projectId);
+        Task RefuseInvitingAsync(int userId, int projectId);
 
         Task RemoveUserFromProjectAsync(int userId, int projectId);
     }

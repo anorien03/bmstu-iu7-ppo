@@ -17,7 +17,7 @@ namespace FinanceAcc.IRepository
 
         Task<List<ProjectMember>> GetRangeByProjectIdAsync(int projectId);
 
-        Task<int> CountRowsAsync(int userId, MemberStatus status);
+        Task<int> CountProjectsAsync(int userId, MemberStatus status);
 
         Task<ProjectMember> GetByIdAsync(int userId, int projectId);
     }

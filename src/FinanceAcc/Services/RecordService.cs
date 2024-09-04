@@ -36,6 +36,11 @@ namespace FinanceAcc.Services
                 throw new CategoryNotFoundException("Category not found in project");
             }
 
+            if (record.Date > DateTime.Today)
+            {
+                throw new InvalidDateException();
+            }
+
             await _recordRepository.AddAsync(record);
         }
 
@@ -55,8 +60,7 @@ namespace FinanceAcc.Services
                 }
             }
 
-            return await _recordRepository.GetFilteredAsync(x =>
-                    categoryId == null ? x.ProjectId == projectId : x.CategoryId == categoryId);
+            return await _recordRepository.GetFilteredAsync(x => categoryId == null ? x.ProjectId == projectId : x.CategoryId == categoryId);
         }
 
 

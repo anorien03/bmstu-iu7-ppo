@@ -24,25 +24,21 @@ namespace FinanceAcc.Services
 
         private async Task<bool> CheckUserLimit(User user, MemberStatus status)
         {
-            var limit = new UserLevelLimit().getLimit(user.Level, status);
+            var limit = UserLevelLimit.getLimit(user.Level, status);
 
-            if (limit < 0)
+            if (limit == null)
             {
                 return true;
             }
 
-            var userProjectsCount = await _projectMemberRepository.CountRowsAsync(user.Id, status);
-            if (userProjectsCount < limit)
-            {
-                return true;
-            }
-            return false;
+            var userProjectsCount = await _projectMemberRepository.CountProjectsAsync(user.Id, status);
+            return userProjectsCount < limit;
         }
 
 
         public async Task CreateProjectAsync(User user, Project project)
         {
-            if (! await CheckUserLimit(user, MemberStatus.Admin))
+            if (!await CheckUserLimit(user, MemberStatus.Admin))
             {
                 throw new UserLevelLimitReachedException("User reached the limit of owning projects.");
             }
@@ -110,7 +106,7 @@ namespace FinanceAcc.Services
         }
 
 
-        public async Task InviteUserToProjectAsync(int userId, int projectId)
+        public async Task InviteUserAsync(int userId, int projectId)
         {
             if (await _userRepository.GetByIdAsync(userId) == null)
             {
@@ -131,7 +127,7 @@ namespace FinanceAcc.Services
         }
 
 
-        public async Task AcceptInvitingToProjectAsync(User user, int projectId)
+        public async Task AcceptInvitingAsync(User user, int projectId)
         {
             var member = await _projectMemberRepository.GetByIdAsync(user.Id, projectId);
             if (member == null)
@@ -154,7 +150,7 @@ namespace FinanceAcc.Services
         }
 
 
-        public async Task RefuseInvitingToProjectAsync(int userId, int projectId)
+        public async Task RefuseInvitingAsync(int userId, int projectId)
         {
             var member = await _projectMemberRepository.GetByIdAsync(userId, projectId);
             if (member == null)
